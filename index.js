@@ -11,7 +11,7 @@ async function checkWeather(city){
     const response = await fetch(apiUrl + city + `&appid=${apiKey}`);
     var data = await response.json();
 
-    console.log(data);
+    //console.log(data);
 
     document.querySelector(".city").innerHTML = data.name;
     document.querySelector(".temp").innerHTML =Math.round(data.main.temp) + "°C" ;
@@ -38,7 +38,7 @@ searchBtn.addEventListener("click" , ()=>{
 });
 
 
-checkWeather(city);
+
 
 // https://openweathermap.org/api/geocoding-api
 // http://api.openweathermap.org/geo/1.0/reverse?lat={lat}&lon={lon}&limit={limit}&appid={API key}
@@ -47,12 +47,38 @@ checkWeather(city);
 // temp>30 : orange to vaoilet 
 // ltat anf long
 
-window.addEventListener('DOMContentLoaded',async ()=>{
+/*window.addEventListener('DOMContentLoaded',async ()=>{
+    navigator.geolocation.getCurrentPosition(position =>{
+        const{latitude , longitude}= position.coords ;
+
+        const url = "http://api.openweathermap.org/geo/1.0/reverse?lat={lat}&lon={lon}&limit={limit}&appid={API key}";
+        fetch(url).then(res => res.json()).then(data =>{
+            console.table(data.address);
+        }).catch(()=>{
+            console.log("error")
+        })
+    })
     // get lat an flog 
-    
+    const city = data.address ;
     // get city from lat long
     // checkWeather(city);
+    checkWeather(city);
+})*/
 
+const latUrl = "http://api.openweathermap.org/geo/1.0/reverse?lat={lat}&lon={lon}&limit={limit}&appid={API key}";
 
-
+window.addEventListener("DOMContentLoaded" , () =>{
+    if (navigator.geolocation){
+        navigator.geolocation.getCurrentPosition
+        (showLocation);
+    }
 })
+
+const showLocation = async (position)=>{
+    const  response = await fetch( latUrl);
+    var data = await response.json();
+    console.log(data);
+}
+
+
+checkWeather(city);
